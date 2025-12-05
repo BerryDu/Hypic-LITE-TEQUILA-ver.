@@ -16,12 +16,12 @@
 ## 3. 技术栈与架构
 * **语言**: 100% Kotlin
 * **架构**: MVVM (ViewModel + LiveData)
-* [cite_start]**并发**: Kotlin Coroutines (全线接管 IO 操作，杜绝主线程阻塞) [cite: 30]
+* **并发**: Kotlin Coroutines (全线接管 IO 操作，杜绝主线程阻塞)
 * **UI/交互**: 
   * **Material Design**: ToggleGroup, CardView
-  * [cite_start]**Custom View**: 自定义 `CropOverlayView` 实现遮罩交互 [cite: 10]
+  * **Custom View**: 自定义 `CropOverlayView` 实现遮罩交互
 * **核心渲染**: 
-  * [cite_start]**OpenGL ES 2.0**: `GLSurfaceView` + 自定义 Shader 实现滤镜与变换 [cite: 17]
+  * **OpenGL ES 2.0**: `GLSurfaceView` + 自定义 Shader 实现滤镜与变换
   * **Matrix**: 矩阵运算处理缩放与平移
 * **图片加载**: Coil (支持 Bitmap 复用、降采样及视频帧解码)
 
@@ -31,7 +31,7 @@
     * Clone 本仓库。
     * 等待 Gradle Sync 完成。
     * 连接真机（推荐 Android 10+），点击 Run。
-3.  [cite_start]**权限说明**: 首次运行需授予存储权限（已适配 Android 13+ `READ_MEDIA_IMAGES/VIDEO` 细粒度权限） [cite: 15]。
+3.  **权限说明**: 首次运行需授予存储权限（已适配 Android 13+ `READ_MEDIA_IMAGES/VIDEO` 细粒度权限）。
 
 ## 5. 项目报告：难点攻克与解决思路
 
@@ -43,7 +43,7 @@
 
 ### 5.2 裁剪操作的“破坏性”与撤销 (Undo/Redo)
 * **问题**: 裁剪操作会改变图片的物理尺寸，而普通的 `Undo` 仅记录了缩放/位移参数，导致裁剪后无法正确撤销。
-* [cite_start]**解决**: 设计了包含 `Bitmap?` 字段的 `EditorState` 状态机。对于缩放/滤镜等“参数操作”，仅记录数值以省内存；对于裁剪等“破坏性操作”，在操作前将 Bitmap 快照压入 Undo 栈，实现混合式状态回滚 [cite: 50]。
+* **解决**: 设计了包含 `Bitmap?` 字段的 `EditorState` 状态机。对于缩放/滤镜等“参数操作”，仅记录数值以省内存；对于裁剪等“破坏性操作”，在操作前将 Bitmap 快照压入 Undo 栈，实现混合式状态回滚 。
 
 ### 5.3 大图加载与 OOM 优化
 * **问题**: 加载高分辨率照片（如 4000x3000）直接渲染会导致 OpenGL 黑屏或应用崩溃。
@@ -51,5 +51,3 @@
     1.  使用 Coil 的 `.size()` 限制加载尺寸。
     2.  关键配置 `.allowHardware(false)` 关闭硬件位图加速，解决 OpenGL 纹理上传的兼容性问题。
 
----
-*Created by [你的名字] | 2025*
